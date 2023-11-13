@@ -1,6 +1,5 @@
 package com.curiousapps.geoquiz
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.curiousapps.geoquiz.model.Question
