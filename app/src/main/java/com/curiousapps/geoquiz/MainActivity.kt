@@ -1,18 +1,30 @@
 package com.curiousapps.geoquiz
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.curiousapps.geoquiz.databinding.ActivityMainBinding
-import com.curiousapps.geoquiz.model.Question
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val quizViewModel: QuizViewModel by viewModels()
+    private val cheatLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        //Handle result
+        if (result.resultCode == Activity.RESULT_OK){
+            quizViewModel.isCheater =
+                result.data?.getBooleanExtra(EXTRA_ANS_SHOWN, false) ?: false
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +40,14 @@ class MainActivity : AppCompatActivity() {
         Log.w(TAG, "Got a ViewModel: $quizViewModel")
         binding.apply {
 
+            cheatButton.setOnClickListener{
+                //Start Cheat Activity
+                //val cheatIntent = Intent(this@MainActivity, CheatActivity::class.java)
+                val answerIsTrue = quizViewModel.currentQuestionAnswer
+                val cheatIntent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+                //startActivity(cheatIntent)
+                cheatLauncher.launch(cheatIntent)
+            }
             trueButton.setOnClickListener {
                 checkAnswer(true)
             }
@@ -37,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             nextButton.setOnClickListener {
                 quizViewModel.moveToNext()
                 updateQuestion()
+
             }
             previousButton.setOnClickListener {
                 quizViewModel.moveToPrevious()
@@ -53,10 +74,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
-        val messageId = if (userAnswer == correctAnswer) {
-            R.string.correct_toast
-        } else {
-            R.string.incorrect_toast
+//        val messageId = if (userAnswer == correctAnswer) {
+//            R.string.correct_toast
+//        } else {
+//            R.string.incorrect_toast
+//        }
+        val messageId = when{
+            quizViewModel.isCheater -> R.string.judgement_toast
+            userAnswer == correctAnswer -> R.string.correct_toast
+            else -> R.string.incorrect_toast
         }
         Toast.makeText(this@MainActivity, messageId, Toast.LENGTH_SHORT).show()
     }

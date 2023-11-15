@@ -36,43 +36,56 @@ class MainActivityTest {
     @Test
     fun showTrueButtonOnLaunch(){
         onView(withId(R.id.true_button))
-            .check(matches(withText(R.string.true_button)))
+            .check(matches(withText(R.string.true_button_text)))
     }
+    @Test
     fun showTrueButtonOnLaunchAndIsClickable(){
         onView(withId(R.id.true_button))
-            .check(matches(withText(R.string.true_button)))
+            .check(matches(withText(R.string.true_button_text)))
             .perform(click())
     }
     @Test
     fun showFalseButtonOnLaunch(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
     }
     @Test
     fun showFalseButtonOnLaunchAndIsClickable(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
             .perform(click())
     }
     @Test
     fun showPreviousButtonOnLaunch(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
     }
     @Test
     fun showPreviousButtonOnLaunchAndIsClickable(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
             .perform(click())
     }
     @Test
     fun showNextButtonOnLaunch(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
     }
+    @Test
     fun showNextButtonOnLaunchAndIsClickable(){
         onView(withId(R.id.false_button))
-            .check(matches(withText(R.string.false_button)))
+            .check(matches(withText(R.string.false_button_text)))
+            .perform(click())
+    }
+    @Test
+    fun showCheatButtonOnLaunch(){
+        onView(withId(R.id.cheat_button))
+            .check(matches(withText(R.string.cheat_button_text)))
+    }
+    @Test
+    fun showCheatButtonOnLaunchAndIsClickable(){
+        onView(withId(R.id.cheat_button))
+            .check(matches(withText(R.string.cheat_button_text)))
             .perform(click())
     }
     @Test
